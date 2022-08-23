@@ -17,6 +17,7 @@
     "define-lazy-prop": "^2.0.0",
     "depd": "^1.1.2",
     "destroy": "^1.0.4",
+    "dotenv": "^16.0.1",
     "ee-first": "^1.1.1",
     "encodeurl": "^1.0.2",
     "escape-html": "^1.0.3",
