@@ -1,12 +1,16 @@
 package rahmat.rmdn.generatebearer
 
-import org.apache.commons.io.IOUtils
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import org.apache.poi.util.IOUtils
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
+import org.springframework.stereotype.Service
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
@@ -56,7 +60,7 @@ fun requestBearer(pass:String?, username: String?): String? {
 		val response = restTemplate.postForObject(url, entity, ResponseGetBulkBearer::class.java)
 
 		if (response?.success == true) {
-			return response.data?.access_token
+			return response.data?.accessToken
 		}
 		return null
 	} catch (e: Exception) {
@@ -80,8 +84,10 @@ fun writeToExcelFile(
 
 	// Insert data
 	data.forEachIndexed { index, data ->
+		val row = xlWs.createRow(index + 1)
 		keys.forEachIndexed { columnIndex, s ->
-			xlWs.createRow(index + 1).createCell(columnIndex).setCellValue(data[s].toString())
+			println(data[s].toString())
+			row.createCell(columnIndex).setCellValue(data[s].toString())
 		}
 	}
 
@@ -122,13 +128,14 @@ data class User(
 	val password: String?
 )
 
-data class ResponseGetBulkBearer(
-	val success: Boolean?,
-	val message: String?,
-	val data: Data?
-)
+class ResponseGetBulkBearer {
+	val success: Boolean? = null
+	val message: String? = null
+	val data: Data? = null
+}
 
 data class Data(
-	val access_token: String?
+	@JsonProperty("access_token")
+	val accessToken: String?
 )
 
